@@ -53,9 +53,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserSignUpResponse> create(UserSignUpRequest userSignUpRequest) {
         User user = userMapper.signUpToEntity(userSignUpRequest);
+        user.setLogin(userSignUpRequest.login());
         user.setRole(Role.USER);
         user.setBalance(0.0);
         UserSignUpResponse response = userMapper.signUpToModel(userRepository.save(user));
+        //have problem with mapping login instance 
         return ResponseEntity.ok(response);
     }
 
