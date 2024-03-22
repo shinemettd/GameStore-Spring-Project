@@ -1,9 +1,13 @@
 package kg.edu.alatoo.game_store.service.impl;
 
+import kg.edu.alatoo.game_store.mapper.GameMapper;
 import kg.edu.alatoo.game_store.entity.Game;
+import kg.edu.alatoo.game_store.payload.game.GameRequest;
+import kg.edu.alatoo.game_store.payload.game.GameResponse;
 import kg.edu.alatoo.game_store.repository.GameRepository;
 import kg.edu.alatoo.game_store.service.GameService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,65 +17,73 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository repository;
 
-    public GameServiceImpl(GameRepository repository) {
+    private final GameMapper mapper;
+
+    public GameServiceImpl(GameRepository repository, GameMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
+        System.out.println(mapper);
     }
 
     @Override
-    public ResponseEntity<Page<Game>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<GameResponse>> getAll(Pageable pageable) {
         Page<Game> gamesPage = repository.findAll(pageable);
-        return ResponseEntity.ok(gamesPage);
+        Page<GameResponse> gameResponsesList = gamesPage.map(mapper::toModel);
+
+        return ResponseEntity.ok(gameResponsesList);
     }
 
     @Override
-    public ResponseEntity<Game> get(Long id) {
+    public ResponseEntity<GameResponse> get(Long id) {
         Game game = findGameIfExist(id);
-        return ResponseEntity.ok(game);
+        return ResponseEntity.ok(mapper.toModel(game));
     }
 
     @Override
-    public ResponseEntity<Game> create(Game game) {
+    public ResponseEntity<GameResponse> create(GameRequest gameRequest) {
+        Game game = mapper.toEntity(gameRequest);
         Game savedGame = repository.save(game);
-        return ResponseEntity.ok(savedGame);
+        return ResponseEntity.ok(mapper.toModel(savedGame));
     }
 
     @Override
-    public ResponseEntity<Game> update(Long id, Game game) {
+    public ResponseEntity<GameResponse> update(Long id, GameRequest gameRequest) {
         Game gameToUpdate = findGameIfExist(id);
 
-        gameToUpdate.setTitle(game.getTitle());
-        gameToUpdate.setPrice(game.getPrice());
-        gameToUpdate.setDiscount(game.getDiscount());
+        gameToUpdate.setTitle(gameRequest.title());
+        gameToUpdate.setPrice(gameRequest.price());
+        gameToUpdate.setDiscount(gameRequest.discount());
 
         Game updatedGame = repository.save(gameToUpdate);
-        return ResponseEntity.ok(updatedGame);
+
+        return ResponseEntity.ok(mapper.toModel(updatedGame));
     }
 
     @Override
-    public ResponseEntity<Game> updateTitle(Long id, String newTitle) {
+    public ResponseEntity<GameResponse> updateTitle(Long id, String newTitle) {
         Game gameToUpdate = findGameIfExist(id);
 
         gameToUpdate.setTitle(newTitle);
         Game updatedGame = repository.save(gameToUpdate);
-        return ResponseEntity.ok(updatedGame);
+        return ResponseEntity.ok(mapper.toModel(updatedGame));
     }
 
     @Override
-    public ResponseEntity<Game> updatePrice(Long id, Double newPrice) {
+    public ResponseEntity<GameResponse> updatePrice(Long id, Double newPrice) {
         Game gameToUpdate = findGameIfExist(id);
 
         gameToUpdate.setPrice(newPrice);
         Game updatedGame = repository.save(gameToUpdate);
-        return ResponseEntity.ok(updatedGame);
+        return ResponseEntity.ok(mapper.toModel(updatedGame));
     }
 
     @Override
-    public ResponseEntity<Game> updateDiscount(Long id, Integer newDiscount) {
+    public ResponseEntity<GameResponse> updateDiscount(Long id, Integer newDiscount) {
         Game gameToUpdate = findGameIfExist(id);
 
         gameToUpdate.setDiscount(newDiscount);
         Game updatedGame = repository.save(gameToUpdate);
-        return ResponseEntity.ok(updatedGame);
+        return ResponseEntity.ok(mapper.toModel(updatedGame));
     }
 
     @Override

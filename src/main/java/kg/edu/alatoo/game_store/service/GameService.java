@@ -1,25 +1,26 @@
 package kg.edu.alatoo.game_store.service;
 
 import kg.edu.alatoo.game_store.entity.Game;
+import kg.edu.alatoo.game_store.payload.game.GameRequest;
+import kg.edu.alatoo.game_store.payload.game.GameResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 
 public interface GameService {
-    ResponseEntity<Page<Game>> getAll(Pageable pageable);
+    ResponseEntity<Page<GameResponse>> getAll(Pageable pageable);
 
-    ResponseEntity<Game> get(Long id);
+    ResponseEntity<GameResponse> get(Long id);
 
-    ResponseEntity<Game> create(Game game);
+    ResponseEntity<GameResponse> create(GameRequest gameRequest);
 
-    ResponseEntity<Game> update(Long id, Game game);
+    ResponseEntity<GameResponse> update(Long id, GameRequest gameRequest);
 
-    ResponseEntity<Game> updateTitle(Long id, String newTitle);
+    ResponseEntity<GameResponse> updateTitle(Long id, String newTitle);
 
-    ResponseEntity<Game> updatePrice(Long id, Double newPrice);
+    ResponseEntity<GameResponse> updatePrice(Long id, Double newPrice);
 
-    ResponseEntity<Game> updateDiscount(Long id, Integer newDiscount);
+    ResponseEntity<GameResponse> updateDiscount(Long id, Integer newDiscount);
 
     ResponseEntity<Void> delete(Long id);
 }
