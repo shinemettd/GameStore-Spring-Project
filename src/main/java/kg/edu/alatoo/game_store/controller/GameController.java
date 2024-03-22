@@ -54,11 +54,6 @@ public class GameController {
         return service.updatePrice(id, newPrice);
     }
 
-    @PatchMapping("/update/{id}/discount")
-    public ResponseEntity<GameResponse> updateDiscount(@PathVariable("id") Long id, @RequestBody Integer discount) {
-        return service.updateDiscount(id, discount);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         return service.delete(id);
