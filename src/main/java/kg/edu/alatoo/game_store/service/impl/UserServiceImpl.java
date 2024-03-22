@@ -2,6 +2,7 @@ package kg.edu.alatoo.game_store.service.impl;
 
 import kg.edu.alatoo.game_store.entity.Game;
 import kg.edu.alatoo.game_store.entity.User;
+import kg.edu.alatoo.game_store.enums.Role;
 import kg.edu.alatoo.game_store.mapper.GameMapper;
 import kg.edu.alatoo.game_store.mapper.UserMapper;
 import kg.edu.alatoo.game_store.payload.game.GameResponse;
@@ -34,11 +35,12 @@ public class UserServiceImpl implements UserService {
         this.gameMapper = gameMapper;
     }
 
-
     @Override
     public ResponseEntity<Page<UserGetResponse>> getAll(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
+        System.out.println(users);
         Page<UserGetResponse> usersResponse = users.map(userMapper::toModel);
+        System.out.println(usersResponse);
         return ResponseEntity.ok(usersResponse);
     }
 
@@ -51,6 +53,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserSignUpResponse> create(UserSignUpRequest userSignUpRequest) {
         User user = userMapper.signUpToEntity(userSignUpRequest);
+        user.setRole(Role.USER);
+        user.setBalance(0.0);
         UserSignUpResponse response = userMapper.signUpToModel(userRepository.save(user));
         return ResponseEntity.ok(response);
     }
