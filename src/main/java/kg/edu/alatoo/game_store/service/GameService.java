@@ -1,6 +1,5 @@
 package kg.edu.alatoo.game_store.service;
 
-import kg.edu.alatoo.game_store.entity.Game;
 import kg.edu.alatoo.game_store.payload.game.GameRequest;
 import kg.edu.alatoo.game_store.payload.game.GameResponse;
 import org.springframework.data.domain.Page;
@@ -19,8 +18,6 @@ public interface GameService {
     ResponseEntity<GameResponse> updateTitle(Long id, String newTitle);
 
     ResponseEntity<GameResponse> updatePrice(Long id, Double newPrice);
-
-    ResponseEntity<GameResponse> updateDiscount(Long id, Integer newDiscount);
 
     ResponseEntity<Void> delete(Long id);
 }

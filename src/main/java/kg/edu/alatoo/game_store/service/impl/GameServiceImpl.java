@@ -7,7 +7,6 @@ import kg.edu.alatoo.game_store.payload.game.GameResponse;
 import kg.edu.alatoo.game_store.repository.GameRepository;
 import kg.edu.alatoo.game_store.service.GameService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -52,7 +51,6 @@ public class GameServiceImpl implements GameService {
 
         gameToUpdate.setTitle(gameRequest.title());
         gameToUpdate.setPrice(gameRequest.price());
-        gameToUpdate.setDiscount(gameRequest.discount());
 
         Game updatedGame = repository.save(gameToUpdate);
 
@@ -73,15 +71,6 @@ public class GameServiceImpl implements GameService {
         Game gameToUpdate = findGameIfExist(id);
 
         gameToUpdate.setPrice(newPrice);
-        Game updatedGame = repository.save(gameToUpdate);
-        return ResponseEntity.ok(mapper.toModel(updatedGame));
-    }
-
-    @Override
-    public ResponseEntity<GameResponse> updateDiscount(Long id, Integer newDiscount) {
-        Game gameToUpdate = findGameIfExist(id);
-
-        gameToUpdate.setDiscount(newDiscount);
         Game updatedGame = repository.save(gameToUpdate);
         return ResponseEntity.ok(mapper.toModel(updatedGame));
     }
