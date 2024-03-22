@@ -1,10 +1,13 @@
 package kg.edu.alatoo.game_store.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -17,6 +20,7 @@ public class Game extends BaseEntity {
 
     Double price;
 
-    Integer discount;
+    @ManyToMany
+    Set<User> users;
 
 }

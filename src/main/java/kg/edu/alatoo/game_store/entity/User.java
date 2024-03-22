@@ -1,6 +1,9 @@
 package kg.edu.alatoo.game_store.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import kg.edu.alatoo.game_store.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -22,7 +26,8 @@ public class User extends BaseEntity {
 
     Double balance;
 
-    List<Game> gamesList;
+    @ManyToMany
+    Set<Game> games;
 
     Role role;
 }
