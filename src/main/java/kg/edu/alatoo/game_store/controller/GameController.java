@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/games")
 @Tag(
-    name = "Controller for operations with games"
+        name = "Game Controller",
+        description = "Controller for operations with games"
 )
 public class GameController {
 
