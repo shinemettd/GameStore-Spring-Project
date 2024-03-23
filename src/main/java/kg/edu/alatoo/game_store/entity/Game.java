@@ -1,7 +1,6 @@
 package kg.edu.alatoo.game_store.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,11 +15,12 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Game extends BaseEntity {
 
+    @Column(length = 100, unique = true)
     String title;
 
     Double price;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "games")
     Set<User> users;
 
 }

@@ -17,6 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
 
+    @Column(length = 100, unique = true)
     String login;
 
     String nickname;
@@ -26,6 +27,11 @@ public class User extends BaseEntity {
     Double balance;
 
     @ManyToMany
+    @JoinTable(
+            name = "user_games",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     Set<Game> games;
 
     Role role;
