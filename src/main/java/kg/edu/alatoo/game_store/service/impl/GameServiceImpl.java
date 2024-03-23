@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -83,7 +84,9 @@ public class GameServiceImpl implements GameService {
     }
 
     private Game findGameIfExist(Long id) {
-        Game game = repository.findById(id).orElseThrow();
+        Game game = repository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Game with id " + id + "does not exits"));
         return game;
     }
 }
