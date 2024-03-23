@@ -12,6 +12,7 @@ import kg.edu.alatoo.game_store.payload.user.*;
 import kg.edu.alatoo.game_store.repository.GameRepository;
 import kg.edu.alatoo.game_store.repository.UserRepository;
 import kg.edu.alatoo.game_store.service.UserService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -56,10 +57,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<UserSignUpResponse> create(UserSignUpRequest userSignUpRequest) {
+        if (!userSignUpRequest.password().equals(userSignUpRequest.confirmPassword())) {
+            throw new NotValidException("Passwords does not match");
+        }
+
         User user = userMapper.signUpToEntity(userSignUpRequest);
         user.setRole(Role.USER);
         user.setBalance(0.0);
         user.setGames(Set.of());
+
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new NotValidException("Nickname is already taken");
+        }
+
         UserSignUpResponse response = userMapper.signUpToModel(userRepository.save(user));
         return ResponseEntity.ok(response);
     }

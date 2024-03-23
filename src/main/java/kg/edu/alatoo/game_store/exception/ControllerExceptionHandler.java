@@ -32,8 +32,8 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Map> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<Map> handleUserAlreadyExists(AlreadyExistsException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("time", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST);

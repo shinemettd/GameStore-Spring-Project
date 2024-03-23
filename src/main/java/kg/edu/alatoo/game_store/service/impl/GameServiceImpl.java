@@ -1,16 +1,18 @@
 package kg.edu.alatoo.game_store.service.impl;
 
+import kg.edu.alatoo.game_store.exception.NotFoundException;
+import kg.edu.alatoo.game_store.exception.NotValidException;
 import kg.edu.alatoo.game_store.mapper.GameMapper;
 import kg.edu.alatoo.game_store.entity.Game;
 import kg.edu.alatoo.game_store.payload.game.GameRequest;
 import kg.edu.alatoo.game_store.payload.game.GameResponse;
 import kg.edu.alatoo.game_store.repository.GameRepository;
 import kg.edu.alatoo.game_store.service.GameService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -42,7 +44,14 @@ public class GameServiceImpl implements GameService {
     @Override
     public ResponseEntity<GameResponse> create(GameRequest gameRequest) {
         Game game = mapper.toEntity(gameRequest);
-        Game savedGame = repository.save(game);
+        Game savedGame;
+
+        try {
+            savedGame = repository.save(game);
+        } catch (DataIntegrityViolationException e) {
+            throw new NotValidException("User with this nickname already exists");
+        }
+
         return ResponseEntity.ok(mapper.toModel(savedGame));
     }
 
