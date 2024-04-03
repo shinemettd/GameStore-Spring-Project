@@ -1,4 +1,6 @@
-# Project Name: Basic Spring Project
+# Project Name: GameStore (basic) Spring Project
+
+- ## Video: [https://www.youtube.com/watch?v=WqS79TGTJFM](https://youtu.be/mUj_YqB6GUk)
 
 ## Description
 This Spring project is a test university project, to demonstrate the skills and mastery of the Backend Development subject. 
