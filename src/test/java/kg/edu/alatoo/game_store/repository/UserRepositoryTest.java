@@ -49,7 +49,7 @@ class UserRepositoryTest {
         User user = repository.findById(exactId).orElseThrow(() -> new NotFoundException("User not found"));
 
         assertThat(user).hasFieldOrPropertyWithValue("id", user.getId());
-        assertThat(user).hasFieldOrPropertyWithValue("login", user.getLogin());
+        assertThat(user).hasFieldOrPropertyWithValue("login", user.getUsername());
         assertThat(user).hasFieldOrPropertyWithValue("password", user.getPassword());
         assertThat(user).hasFieldOrPropertyWithValue("balance", user.getBalance());
         assertThat(user).hasFieldOrPropertyWithValue("games", user.getGames());

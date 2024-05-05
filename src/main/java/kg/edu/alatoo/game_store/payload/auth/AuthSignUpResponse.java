@@ -1,10 +1,10 @@
-package kg.edu.alatoo.game_store.payload.user;
+package kg.edu.alatoo.game_store.payload.auth;
 
 import kg.edu.alatoo.game_store.entity.Game;
 
 import java.util.Set;
 
-public record UserSignUpResponse(
+public record AuthSignUpResponse(
         Long id,
         String login,
         String username,

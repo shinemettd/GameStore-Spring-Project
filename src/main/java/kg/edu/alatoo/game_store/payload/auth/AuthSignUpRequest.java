@@ -1,11 +1,11 @@
-package kg.edu.alatoo.game_store.payload.user;
+package kg.edu.alatoo.game_store.payload.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UserSignUpRequest(
+public record AuthSignUpRequest(
         @NotBlank(message = "Login can't be empty")
         @Size(min = 8, max = 100, message = "Login must contain from 8 to 100 symbols")
         @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Login might contain only letters and numbers ")

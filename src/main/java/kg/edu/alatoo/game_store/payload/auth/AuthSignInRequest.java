@@ -1,6 +1,6 @@
-package kg.edu.alatoo.game_store.payload.user;
+package kg.edu.alatoo.game_store.payload.auth;
 
-public record UserSignInRequest(
+public record AuthSignInRequest(
         String username,
         String password
 ) {
