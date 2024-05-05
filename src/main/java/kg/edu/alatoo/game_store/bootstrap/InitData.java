@@ -6,7 +6,6 @@ import kg.edu.alatoo.game_store.enums.Role;
 import kg.edu.alatoo.game_store.repository.GameRepository;
 import kg.edu.alatoo.game_store.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class InitData implements CommandLineRunner {
+public class InitDataStart implements CommandLineRunner {
 
     private final UserRepository userRepository;
 

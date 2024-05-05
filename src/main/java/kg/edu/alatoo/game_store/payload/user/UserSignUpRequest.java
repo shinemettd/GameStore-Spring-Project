@@ -13,7 +13,7 @@ public record UserSignUpRequest(
 
         @NotBlank(message = "Nickname can't be empty")
         @Size(min = 1, max = 100, message = "Nickname must contain from 1 to 100 symbols")
-        String nickname,
+        String username,
 
         @NotBlank(message = "Password can't be empty")
         @Size(min = 8, max = 100, message = "Password must contain from 8 to 100 symbols")

@@ -7,7 +7,7 @@ import java.util.Set;
 public record UserSignUpResponse(
         Long id,
         String login,
-        String nickname,
+        String username,
         Double balance,
         Set<Game> games
 ) {
