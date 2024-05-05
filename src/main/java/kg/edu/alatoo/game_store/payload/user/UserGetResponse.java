@@ -7,7 +7,7 @@ import java.util.Set;
 
 public record UserGetResponse(
         String id,
-        String nickname,
+        String username,
         Set<Game> games
 ) {
 }

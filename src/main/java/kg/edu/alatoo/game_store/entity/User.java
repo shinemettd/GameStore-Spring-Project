@@ -24,10 +24,10 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity implements UserDetails {
 
-    @Column(length = 100, unique = true)
-    String login;
-
     @Length(min = 1, max = 100)
+    String nickname;
+
+    @Column(length = 100, unique = true)
     String username;
 
     String password;

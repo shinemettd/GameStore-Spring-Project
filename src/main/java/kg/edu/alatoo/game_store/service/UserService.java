@@ -1,5 +1,9 @@
 package kg.edu.alatoo.game_store.service;
 
+import kg.edu.alatoo.game_store.payload.auth.AuthSignInRequest;
+import kg.edu.alatoo.game_store.payload.auth.AuthSignInResponse;
+import kg.edu.alatoo.game_store.payload.auth.AuthSignUpRequest;
+import kg.edu.alatoo.game_store.payload.auth.AuthSignUpResponse;
 import kg.edu.alatoo.game_store.payload.game.GameResponse;
 import kg.edu.alatoo.game_store.payload.user.*;
 import org.springframework.data.domain.Page;
@@ -11,8 +15,6 @@ public interface UserService {
     ResponseEntity<Page<UserGetResponse>> getAll(Pageable pageable);
 
     ResponseEntity<UserGetResponse> get(Long id);
-
-    ResponseEntity<UserSignUpResponse> create(UserSignUpRequest userSignUpRequest);
 
     ResponseEntity<UserUpdateResponse> update(Long id, UserUpdateRequest userUpdateRequest);
 

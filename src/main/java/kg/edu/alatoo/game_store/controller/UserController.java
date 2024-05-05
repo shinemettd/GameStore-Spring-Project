@@ -2,6 +2,7 @@ package kg.edu.alatoo.game_store.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import kg.edu.alatoo.game_store.payload.game.GameResponse;
 import kg.edu.alatoo.game_store.payload.user.*;
 import kg.edu.alatoo.game_store.service.UserService;
@@ -42,13 +43,6 @@ public class UserController {
         return service.get(id);
     }
 
-    @Operation(
-            summary = "Creating a user"
-    )
-    @PostMapping
-    public ResponseEntity<UserSignUpResponse> create(@RequestBody UserSignUpRequest userSignUpRequest) {
-        return service.create(userSignUpRequest);
-    }
 
     @Operation(
             summary = "Updates full field of user by its id"

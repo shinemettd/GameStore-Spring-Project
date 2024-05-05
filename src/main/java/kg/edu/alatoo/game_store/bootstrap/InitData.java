@@ -3,8 +3,11 @@ package kg.edu.alatoo.game_store.bootstrap;
 import kg.edu.alatoo.game_store.entity.Game;
 import kg.edu.alatoo.game_store.entity.User;
 import kg.edu.alatoo.game_store.enums.Role;
+import kg.edu.alatoo.game_store.payload.auth.AuthSignUpRequest;
 import kg.edu.alatoo.game_store.repository.GameRepository;
 import kg.edu.alatoo.game_store.repository.UserRepository;
+import kg.edu.alatoo.game_store.service.AuthService;
+import kg.edu.alatoo.game_store.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,9 +17,9 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class InitDataStart implements CommandLineRunner {
+public class InitData implements CommandLineRunner {
 
-    private final UserRepository userRepository;
+    private final AuthService authService;
 
     private final GameRepository gameRepository;
 
@@ -27,17 +30,16 @@ public class InitDataStart implements CommandLineRunner {
     }
 
     private void generateUsers() {
-        User me = new User("shinemettd", "shinemetothedeath",
-                "password", 1_000_000.0,
-                Set.of(), Role.ADMIN);
-        User user1 = new User("randomguy", "idkwhattowritehere",
-                "passworddd", 0.0,
-                Set.of(), Role.USER);
-        User user2 = new User("newbie", "qwertyuser",
-                "12345678", 0.0,
-                Set.of(), Role.USER);
+        AuthSignUpRequest me = new AuthSignUpRequest("shinemettd", "shinemetothedeath",
+                "password", "password");
+        AuthSignUpRequest user1 = new AuthSignUpRequest("randomguy", "idkwhattowritehere",
+                "passworddd", "passworddd");
+        AuthSignUpRequest user2 = new AuthSignUpRequest("newbie", "qwertyuser",
+                "12345678", "12345678");
 
-        userRepository.saveAll(List.of(me, user1, user2));
+        authService.signUp(me);
+        authService.signUp(user1);
+        authService.signUp(user2);
     }
 
     private void generateGames() {

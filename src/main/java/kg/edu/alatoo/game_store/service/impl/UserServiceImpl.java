@@ -2,9 +2,8 @@ package kg.edu.alatoo.game_store.service.impl;
 
 import kg.edu.alatoo.game_store.entity.Game;
 import kg.edu.alatoo.game_store.entity.User;
-import kg.edu.alatoo.game_store.enums.Role;
-import kg.edu.alatoo.game_store.exception.NotValidException;
 import kg.edu.alatoo.game_store.exception.NotFoundException;
+import kg.edu.alatoo.game_store.exception.NotValidException;
 import kg.edu.alatoo.game_store.mapper.GameMapper;
 import kg.edu.alatoo.game_store.mapper.UserMapper;
 import kg.edu.alatoo.game_store.payload.game.GameResponse;
@@ -12,7 +11,6 @@ import kg.edu.alatoo.game_store.payload.user.*;
 import kg.edu.alatoo.game_store.repository.GameRepository;
 import kg.edu.alatoo.game_store.repository.UserRepository;
 import kg.edu.alatoo.game_store.service.UserService;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,13 +24,9 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
-
     private final GameRepository gameRepository;
-
     private final UserMapper userMapper;
-
     private final GameMapper gameMapper;
 
     public UserServiceImpl(UserRepository userRepository, GameRepository gameRepository, UserMapper userMapper, GameMapper gameMapper) {
@@ -56,33 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserSignUpResponse> create(UserSignUpRequest userSignUpRequest) {
-        if (!userSignUpRequest.password().equals(userSignUpRequest.confirmPassword())) {
-            throw new NotValidException("Passwords does not match");
-        }
-
-        User user = userMapper.signUpToEntity(userSignUpRequest);
-        user.setRole(Role.USER);
-        user.setBalance(0.0);
-        user.setGames(Set.of());
-
-        try {
-            user = userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            throw new NotValidException("Nickname is already taken");
-        }
-
-        UserSignUpResponse response = userMapper.signUpToModel(userRepository.save(user));
-        return ResponseEntity.ok(response);
-    }
-
-    @Override
     public ResponseEntity<UserUpdateResponse> update(Long id, UserUpdateRequest userUpdateRequest) {
         User user = findUserIfExists(id);
         if (!userUpdateRequest.password().equals(userUpdateRequest.confirmationPassword())) {
             throw new NotValidException("Passwords does not match");
         }
-        user.setNickname(userUpdateRequest.nickname());
+        user.setUsername(userUpdateRequest.username());
         user.setPassword(userUpdateRequest.password());
         UserUpdateResponse response = userMapper.updateToModel(userRepository.save(user));
         return ResponseEntity.ok(response);
@@ -91,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserGetResponse> updateNickname(Long id, String newNickname) {
         User user = findUserIfExists(id);
-        user.setNickname(newNickname);
+        user.setUsername(newNickname);
         return ResponseEntity.ok(userMapper.toModel(userRepository.save(user)));
     }
 
@@ -124,14 +97,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<GameResponse> addGameToUser(Long userId, Long gameId) {
         User user = findUserIfExists(userId);
-        System.out.println(user.getNickname());
+        System.out.println(user.getUsername());
         Game game = gameRepository.findById(gameId).orElseThrow();
         System.out.println(game.getTitle());
 
         user.getGames().add(game);
         user.getGames().forEach(games -> System.out.println(games.getTitle()));
         User save = userRepository.save(user);
-        System.out.println(save.getNickname());
+        System.out.println(save.getUsername());
         System.out.println(save.getGames());
 
         return ResponseEntity.ok(gameMapper.toModel(game));
@@ -143,7 +116,7 @@ public class UserServiceImpl implements UserService {
         Game game = gameRepository.findById(gameId).orElseThrow();
 
         if (!user.getGames().contains(game)) {
-            throw new NotFoundException("User " + user.getNickname() + "does not have " + game.getTitle());
+            throw new NotFoundException("User " + user.getUsername() + "does not have " + game.getTitle());
         }
 
         user.getGames().remove(game);

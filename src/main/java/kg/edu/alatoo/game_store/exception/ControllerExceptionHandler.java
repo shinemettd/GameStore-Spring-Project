@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
-
 public class ControllerExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {

@@ -24,7 +24,6 @@ public class GameServiceImpl implements GameService {
     public GameServiceImpl(GameRepository repository, GameMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
-        System.out.println(mapper);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class GameServiceImpl implements GameService {
         try {
             savedGame = repository.save(game);
         } catch (DataIntegrityViolationException e) {
-            throw new NotValidException("User with this nickname already exists");
+            throw new NotValidException("Game with this title already exists");
         }
 
         return ResponseEntity.ok(mapper.toModel(savedGame));
