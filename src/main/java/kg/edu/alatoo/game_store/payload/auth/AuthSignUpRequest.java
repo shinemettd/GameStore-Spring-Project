@@ -11,8 +11,8 @@ public record UserSignUpRequest(
         @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Login might contain only letters and numbers ")
         String login,
 
-        @NotBlank(message = "Nickname can't be empty")
-        @Size(min = 1, max = 100, message = "Nickname must contain from 1 to 100 symbols")
+        @NotBlank(message = "Username can't be empty")
+        @Size(min = 1, max = 100, message = "Username must contain from 1 to 100 symbols")
         String username,
 
         @NotBlank(message = "Password can't be empty")

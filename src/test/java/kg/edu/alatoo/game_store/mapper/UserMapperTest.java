@@ -3,6 +3,8 @@ package kg.edu.alatoo.game_store.mapper;
 import kg.edu.alatoo.game_store.entity.Game;
 import kg.edu.alatoo.game_store.entity.User;
 import kg.edu.alatoo.game_store.enums.Role;
+import kg.edu.alatoo.game_store.payload.auth.AuthSignUpRequest;
+import kg.edu.alatoo.game_store.payload.auth.AuthSignUpResponse;
 import kg.edu.alatoo.game_store.payload.user.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ class UserMapperTest {
         UserGetResponse response = mapper.toModel(user);
 
         assertNotNull(response);
-        assertEquals("testNickname", response.nickname());
+        assertEquals("testNickname", response.username());
         assertEquals(Set.of(game), response.games());
     }
 
@@ -40,25 +42,25 @@ class UserMapperTest {
                 1.19, Set.of(game1, game2),
                 Role.USER);
 
-        UserSignUpResponse response = mapper.signUpToModel(user);
+        AuthSignUpResponse response = mapper.signUpToModel(user);
 
         assertNotNull(response);
         assertEquals(1.19, response.balance());
         assertEquals("testLogin", response.login());
-        assertEquals("testNickname", response.nickname());
+        assertEquals("testNickname", response.username());
         assertEquals(Set.of(game1, game2), response.games());
     }
 
     @Test
     void signUpToEntityTest() {
-        UserSignUpRequest request = new UserSignUpRequest("testLogin", "testNickname",
+        AuthSignUpRequest request = new AuthSignUpRequest("testLogin", "testNickname",
                 "testPassword", "testPassword");
 
         User user = mapper.signUpToEntity(request);
 
         assertNotNull(user);
-        assertEquals("testLogin", user.getLogin());
-        assertEquals("testNickname", user.getNickname());
+        assertEquals("testLogin", user.getNickname());
+        assertEquals("testNickname", user.getUsername());
         assertEquals("testPassword", user.getPassword());
     }
 
@@ -71,7 +73,7 @@ class UserMapperTest {
         UserUpdateResponse response = mapper.updateToModel(user);
 
         assertNotNull(response);
-        assertEquals("testNickname", response.nickname());
+        assertEquals("testNickname", response.username());
     }
 
     @Test
@@ -82,7 +84,7 @@ class UserMapperTest {
 
         UserBalanceResponse response = mapper.balanceToModel(user);
 
-        assertNotNull(user.getLogin(), response.login());
+        assertNotNull(user.getUsername(), response.username());
         assertNotNull(user.getBalance(), String.valueOf(response.balance()));
     }
 }

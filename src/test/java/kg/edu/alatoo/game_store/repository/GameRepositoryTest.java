@@ -22,11 +22,12 @@ class GameRepositoryTest {
     @Autowired
     GameRepository repository;
 
+    Long exactId;
 
     @BeforeEach
     void setUp() {
         Game game1 = new Game("Test Game 1", 9.99, Set.of());
-        repository.save(game1);
+        exactId = (repository.save(game1)).getId();
 
         Game game2 = new Game("Test Game 2", 19.99, Set.of());
         repository.save(game2);
@@ -41,7 +42,7 @@ class GameRepositoryTest {
 
     @Test
     void findByIdShouldFindGame() {
-        Game game = repository.findById(1L).orElseThrow(() -> new NotFoundException("Game not found"));
+        Game game = repository.findById(exactId).orElseThrow(() -> new NotFoundException("Game not found"));
 
         assertThat(game).hasFieldOrPropertyWithValue("id", game.getId());
         assertThat(game).hasFieldOrPropertyWithValue("title", game.getTitle());

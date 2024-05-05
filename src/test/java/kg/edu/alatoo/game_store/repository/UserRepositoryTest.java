@@ -23,10 +23,12 @@ class UserRepositoryTest {
     @Autowired
     UserRepository repository;
 
+    Long exactId;
+
     @BeforeEach
     void setUp() {
         User user1 = new User("Login", "Nickname", "Password", 10.0, Set.of(), Role.USER);
-        repository.save(user1);
+        exactId = repository.save(user1).getId();
 
         User user2 = new User("Login2", "Nickname2", "Password2", 20.0, Set.of(), Role.ADMIN);
         repository.save(user2);
@@ -44,7 +46,7 @@ class UserRepositoryTest {
 
     @Test
     void findByIdShouldFindGame() {
-        User user = repository.findById(1L).orElseThrow(() -> new NotFoundException("User not found"));
+        User user = repository.findById(exactId).orElseThrow(() -> new NotFoundException("User not found"));
 
         assertThat(user).hasFieldOrPropertyWithValue("id", user.getId());
         assertThat(user).hasFieldOrPropertyWithValue("login", user.getLogin());

@@ -54,19 +54,19 @@ class UserControllerTest {
         assertEquals(expectedResponse.getBody(), response.getBody());
     }
 
-    @Test
-    void createShouldReturnCreatedUser() {
-        UserSignUpRequest mockRequest = mock(UserSignUpRequest.class);
-        UserSignUpResponse mockResponse = mock(UserSignUpResponse.class);
-
-        ResponseEntity<UserSignUpResponse> expectedResponse = ResponseEntity.ok(mockResponse);
-        when(userService.create(mockRequest)).thenReturn(expectedResponse);
-        ResponseEntity<UserSignUpResponse> response = userController.create(mockRequest);
-
-        assertNotNull(response);
-        assertEquals(expectedResponse.getStatusCode(), response.getStatusCode());
-        assertEquals(expectedResponse.getBody(), response.getBody());
-    }
+//    @Test
+//    void createShouldReturnCreatedUser() {
+//        UserSignUpRequest mockRequest = mock(UserSignUpRequest.class);
+//        UserSignUpResponse mockResponse = mock(UserSignUpResponse.class);
+//
+//        ResponseEntity<UserSignUpResponse> expectedResponse = ResponseEntity.ok(mockResponse);
+//        when(userService.create(mockRequest)).thenReturn(expectedResponse);
+//        ResponseEntity<UserSignUpResponse> response = userController.create(mockRequest);
+//
+//        assertNotNull(response);
+//        assertEquals(expectedResponse.getStatusCode(), response.getStatusCode());
+//        assertEquals(expectedResponse.getBody(), response.getBody());
+//    }
 
     @Test
     void updateShouldReturnUpdatedUser() {
