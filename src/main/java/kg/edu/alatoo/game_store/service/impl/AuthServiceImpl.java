@@ -6,10 +6,7 @@ import kg.edu.alatoo.game_store.enums.Role;
 import kg.edu.alatoo.game_store.exception.NotFoundException;
 import kg.edu.alatoo.game_store.exception.NotValidException;
 import kg.edu.alatoo.game_store.mapper.UserMapper;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignInRequest;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignInResponse;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignUpRequest;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignUpResponse;
+import kg.edu.alatoo.game_store.payload.auth.*;
 import kg.edu.alatoo.game_store.repository.UserRepository;
 import kg.edu.alatoo.game_store.service.AuthService;
 import kg.edu.alatoo.game_store.service.JwtService;
@@ -82,5 +79,16 @@ public class AuthServiceImpl implements AuthService {
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(authSignInRequest.username());
         AuthSignInResponse response = new AuthSignInResponse(jwtToken, refreshToken.getToken());
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<JwtTokenResponse> refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        return refreshTokenService.findByToken(refreshTokenRequest.token())
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String accessToken = jwtService.generateToken(user.getUsername());
+                    return ResponseEntity.ok(new JwtTokenResponse(accessToken, refreshTokenRequest.token()));
+                }).orElseThrow(() -> new RuntimeException("Refresh Token is not in DB!"));
     }
 }

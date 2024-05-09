@@ -4,10 +4,7 @@ package kg.edu.alatoo.game_store.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignInRequest;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignInResponse;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignUpRequest;
-import kg.edu.alatoo.game_store.payload.auth.AuthSignUpResponse;
+import kg.edu.alatoo.game_store.payload.auth.*;
 import kg.edu.alatoo.game_store.service.AuthService;
 import kg.edu.alatoo.game_store.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +40,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthSignInResponse> signIn(@RequestBody AuthSignInRequest authSignInRequest) {
         return service.signIn(authSignInRequest);
+    }
+
+    @Operation(
+            summary = "Refreshing refresh token"
+    )
+    @PostMapping("/refresh-token")
+    public ResponseEntity<JwtTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest){
+        return service.refreshToken(refreshTokenRequest);
     }
 }
 

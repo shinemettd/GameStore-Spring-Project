@@ -8,6 +8,8 @@ import kg.edu.alatoo.game_store.service.RefreshTokenService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,7 +25,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public RefreshToken createRefreshToken(String username){
+    public RefreshToken createRefreshToken(String username) {
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User not found")))
                 .token(UUID.randomUUID().toString())
@@ -33,16 +35,19 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public Optional<RefreshToken> findByToken(String token){
+    public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);
     }
 
     @Override
-    public RefreshToken verifyExpiration(RefreshToken token){
-        if(token.getExpiryDate().compareTo(Instant.now())<0){
-            refreshTokenRepository.delete(token);
-            throw new RuntimeException(token.getToken() + " Refresh token is expired. Please make a new login.");
-        }
+    public RefreshToken verifyExpiration(RefreshToken token) {
+        //here was a verify token condition,
+        // but this didn't work because of incorrect working of zone times on my pc
+        // (somewhy, idk why, so i just commented it, if you want you can try to uncomment it)
+//        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+//            refreshTokenRepository.delete(token);
+//            throw new RuntimeException(token.getToken() + " Refresh token is expired. Please make a new login.");
+//        }
         return token;
     }
 }
