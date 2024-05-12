@@ -14,6 +14,8 @@ import kg.edu.alatoo.game_store.service.RefreshTokenService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,23 +64,21 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<AuthSignInResponse> signIn(AuthSignInRequest authSignInRequest) {
-        User user = userRepository.findByUsername(authSignInRequest.username())
-                .orElseThrow(() -> new NotFoundException("User with that username not found"));
-
-        if (!passwordEncoder.matches(authSignInRequest.password(), user.getPassword())) {
-            throw new NotValidException("Incorrect password");
+        Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authSignInRequest.username(),
+                        authSignInRequest.password()
+                )
+        );
+        System.out.println("after auth");
+        if (authenticate.isAuthenticated()) {
+            String jwtToken = jwtService.generateToken(authSignInRequest.username());
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(authSignInRequest.username());
+            AuthSignInResponse response = new AuthSignInResponse(jwtToken, refreshToken.getToken());
+            return ResponseEntity.ok(response);
+        } else {
+            throw new RuntimeException("Smth went wrong");
         }
-
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        authSignInRequest.username(),
-//                        authSignInRequest.password()
-//                )
-//        );
-        String jwtToken = jwtService.generateToken(user.getUsername());
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(authSignInRequest.username());
-        AuthSignInResponse response = new AuthSignInResponse(jwtToken, refreshToken.getToken());
-        return ResponseEntity.ok(response);
     }
 
     @Override

@@ -46,7 +46,7 @@ class UserMapperTest {
 
         assertNotNull(response);
         assertEquals(1.19, response.balance());
-        assertEquals("testLogin", response.login());
+        assertEquals("testLogin", response.nickname());
         assertEquals("testNickname", response.username());
         assertEquals(Set.of(game1, game2), response.games());
     }

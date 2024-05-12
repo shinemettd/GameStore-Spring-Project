@@ -9,7 +9,7 @@ public record AuthSignUpRequest(
         @NotBlank(message = "Login can't be empty")
         @Size(min = 8, max = 100, message = "Login must contain from 8 to 100 symbols")
         @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Login might contain only letters and numbers ")
-        String login,
+        String nickname,
 
         @NotBlank(message = "Username can't be empty")
         @Size(min = 1, max = 100, message = "Username must contain from 1 to 100 symbols")

@@ -6,7 +6,7 @@ import java.util.Set;
 
 public record AuthSignUpResponse(
         Long id,
-        String login,
+        String nickname,
         String username,
         Double balance,
         Set<Game> games
